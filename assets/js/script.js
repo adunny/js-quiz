@@ -1,3 +1,5 @@
+var startQuizEl = document.querySelector("#start");
+var startButtonEl = document.querySelector("#start-button");
 var questions = [
   {
     question: "Commonly used data types DO NOT include:",
@@ -22,68 +24,36 @@ var correctCount = 0;
 
 var time = 20;
 var intervalId;
+var divIds = ['timer', 'question', 'option-list', 'question-result'];
 
-function endQuiz() {
-  clearInterval(intervalId);
+
+startButtonEl.onclick = function() {
+  startQuizEl.remove();
+  generateQuestion();
+}
+
+function generateQuestion() {
   var body = document.body;
-  body.innerHTML = "Game over, You scored " + correctCount;
-}
+  var questionDiv = document.createElement("div");
+  var optionList = document.createElement("ul")
+  var questionResultDiv = document.createElement("div")
 
-function updateTime() {
-  time--;
-  timerEl.textContent = time;
-  if (time <= 0) {
-    endQuiz();
-  }
-}
-
-function renderQuestion() {
+  questionDiv.setAttribute("id", "question");
+  questionDiv.textContent = questions[questionIndex].question;
+  optionList.setAttribute("id", "option-list")
   
-  if (time == 0) {
-    updateTime();
-    return;
-  }
-
-  intervalId = setInterval(updateTime, 1000);
   
-  questionEl.textContent = questions[questionIndex].question;
 
-  optionListEl.innerHTML = "";
-  questionResultEl.innerHTML = "";
 
-  var choices = questions[questionIndex].choices;
-  var choicesLenth = choices.length;
+  body.appendChild(questionDiv);
+  body.appendChild(optionList);
 
-  for (var i = 0; i < choicesLenth; i++) {
-    var questionListItem = document.createElement("li");
-    questionListItem.textContent = choices[i];
-    optionListEl.append(questionListItem);
-  }
+ 
+
+  // for (i=0; i < divIds.length; i++) {
+  //   var d = document.createElement('div');
+  //   d.setAttribute('id', divIds[i]);
+  //   body.appendChild(d);
+  // }
+  
 }
-
-function nextQuestion() {
-  questionIndex++;
-  if (questionIndex === questions.length) {
-    time = 0;
-  }
-  renderQuestion();
-}
-
-function checkAnswer(event) {
-  clearInterval(intervalId);
-  if (event.target.matches("li")) {
-    var answer = event.target.textContent;
-    if (answer === questions[questionIndex].answer) {
-      questionResultEl.textContent = "Correct";
-      correctCount++;
-    } else {
-      questionResultEl.textContent = "Incorrect";
-      time = time - 2;
-      timerEl.textContent = time;
-    }
-  }
-  setTimeout(nextQuestion, 2000);
-}
-
-renderQuestion();
-optionListEl.addEventListener("click", checkAnswer);
