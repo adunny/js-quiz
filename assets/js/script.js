@@ -14,10 +14,11 @@ var questions = [
   },
 ];
 
-var questionEl = document.querySelector("#question");
-var optionListEl = document.querySelector("#option-list");
-var questionResultEl = document.querySelector("#question-result");
-var timerEl = document.querySelector("#timer");
+
+var questionItem = document.createElement("div");
+var optionList = document.createElement("ul")
+var questionResultItem = document.createElement("div")
+var timerItem = document.createElement("div")
 
 var questionIndex = 0;
 var correctCount = 0;
@@ -32,11 +33,13 @@ startButtonEl.onclick = function() {
   generateQuestion();
 }
 
+function endQuiz() {
+
+}
+
 function generateQuestion() {
   var body = document.body;
-  var questionItem = document.createElement("div");
-  var optionList = document.createElement("ul")
-  var questionResultItem = document.createElement("div")
+ 
 
   questionItem.setAttribute("id", "question");
   questionItem.textContent = questions[questionIndex].question;
@@ -60,8 +63,23 @@ function generateQuestion() {
 
 }
 
+function nextQuestion() {
+  questionIndex++;
+  generateQuestion();
+
+}
+
 function checkAnswer(event) {
   if (event.target.matches("li")) {
-    
+    var answer = event.target.textContent
+    if (answer === questions[questionIndex].answer) {
+      questionResultItem.textContent = "Correct!";
+    }
+    else{
+      questionResultItem.textContent = "Incorrect!";
+    }
   }
+  setTimeout(nextQuestion, 2000);
 }
+
+optionList.addEventListener("click", checkAnswer);
