@@ -34,26 +34,34 @@ startButtonEl.onclick = function() {
 
 function generateQuestion() {
   var body = document.body;
-  var questionDiv = document.createElement("div");
+  var questionItem = document.createElement("div");
   var optionList = document.createElement("ul")
-  var questionResultDiv = document.createElement("div")
+  var questionResultItem = document.createElement("div")
 
-  questionDiv.setAttribute("id", "question");
-  questionDiv.textContent = questions[questionIndex].question;
-  optionList.setAttribute("id", "option-list")
-  
-  
+  questionItem.setAttribute("id", "question");
+  questionItem.textContent = questions[questionIndex].question;
+  optionList.setAttribute("id", "option-list");
+  optionList.textContent = "";
+  questionResultItem.setAttribute("id", "question-result");
+  questionResultItem.textcontent = "";
 
+  var choices = questions[questionIndex].choices;
+  var choicesLength = choices.length;
 
-  body.appendChild(questionDiv);
+  for (var i = 0; i < choicesLength; i++) {
+    var questionListItem = document.createElement("li");
+    questionListItem.textContent = choices[i];
+    optionList.appendChild(questionListItem);
+  }
+
+  body.appendChild(questionItem);
   body.appendChild(optionList);
+  body.appendChild(questionResultItem);
 
- 
+}
 
-  // for (i=0; i < divIds.length; i++) {
-  //   var d = document.createElement('div');
-  //   d.setAttribute('id', divIds[i]);
-  //   body.appendChild(d);
-  // }
-  
+function checkAnswer(event) {
+  if (event.target.matches("li")) {
+    
+  }
 }
