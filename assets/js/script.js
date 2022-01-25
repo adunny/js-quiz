@@ -19,6 +19,7 @@ var questionItem = document.createElement("div");
 var optionList = document.createElement("ul")
 var questionResultItem = document.createElement("div")
 var timerItem = document.createElement("div")
+var body = document.body;
 
 var questionIndex = 0;
 var correctCount = 0;
@@ -34,13 +35,27 @@ startButtonEl.onclick = function() {
 }
 
 function endQuiz() {
+  clearInterval(intervalId)
+  body.innerHTML = "Game over! Your score is: " + correctCount;
+}
 
+function updateTimer() {
+  body.appendChild(timerItem);
+  time--;
+  timerItem.textContent = time;
+  if(time <= 0) {
+    endQuiz();
+  }
 }
 
 function generateQuestion() {
-  var body = document.body;
- 
+  if (time == 0) {
+    updateTimer();
+    return;
+  }
 
+  intervalId = setInterval(updateTimer, 1000);
+  
   questionItem.setAttribute("id", "question");
   questionItem.textContent = questions[questionIndex].question;
   optionList.setAttribute("id", "option-list");
@@ -65,18 +80,25 @@ function generateQuestion() {
 
 function nextQuestion() {
   questionIndex++;
+  if (questionIndex === questions.length){
+    time = 0;
+  }
   generateQuestion();
 
 }
 
 function checkAnswer(event) {
+  clearInterval(intervalId);
   if (event.target.matches("li")) {
     var answer = event.target.textContent
     if (answer === questions[questionIndex].answer) {
       questionResultItem.textContent = "Correct!";
+      correctCount++;
     }
     else{
       questionResultItem.textContent = "Incorrect!";
+      time = time - 3;
+      timerItem.textContent = time;
     }
   }
   setTimeout(nextQuestion, 2000);
