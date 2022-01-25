@@ -1,5 +1,7 @@
 var startQuizEl = document.querySelector("#start");
 var startButtonEl = document.querySelector("#start-button");
+var highscoreEl = document.querySelector("#highscore")
+var highscoreBtnEl = document.querySelector("#highscore-btn")
 var questions = [
   {
     question: "Commonly used data types DO NOT include:",
@@ -16,9 +18,10 @@ var questions = [
 
 
 var questionItem = document.createElement("div");
-var optionList = document.createElement("ul")
-var questionResultItem = document.createElement("div")
-var timerItem = document.createElement("div")
+var optionList = document.createElement("ul");
+var questionResultItem = document.createElement("div");
+var timerItem = document.createElement("div");
+var highscoreList = document.createElement("ul");
 var body = document.body;
 
 var questionIndex = 0;
@@ -31,13 +34,32 @@ var divIds = ['timer', 'question', 'option-list', 'question-result'];
 
 startButtonEl.onclick = function() {
   startQuizEl.remove();
+  highscoreEl.remove();
   generateQuestion();
+};
+
+
+highscoreBtnEl.onclick = function() {
+  startQuizEl.remove();
+  highscoreEl.remove();
+  highscorePage();
+
+};
+
+function highscorePage() {
+ var highscoreListItem = document.createElement("li")
+
+ highscoreListItem.textcontent = "";
+ highscoreList.appendChild(highscoreListItem);
+ body.appendChild(highscoreList);
+
 }
+
 
 function endQuiz() {
   clearInterval(intervalId)
   body.innerHTML = "Game over! Your score is: " + correctCount;
-}
+};
 
 function updateTimer() {
   body.appendChild(timerItem);
@@ -46,7 +68,7 @@ function updateTimer() {
   if(time <= 0) {
     endQuiz();
   }
-}
+};
 
 function generateQuestion() {
   if (time == 0) {
@@ -76,7 +98,7 @@ function generateQuestion() {
   body.appendChild(optionList);
   body.appendChild(questionResultItem);
 
-}
+};
 
 function nextQuestion() {
   questionIndex++;
@@ -85,7 +107,7 @@ function nextQuestion() {
   }
   generateQuestion();
 
-}
+};
 
 function checkAnswer(event) {
   clearInterval(intervalId);
@@ -102,6 +124,6 @@ function checkAnswer(event) {
     }
   }
   setTimeout(nextQuestion, 2000);
-}
+};
 
 optionList.addEventListener("click", checkAnswer);
