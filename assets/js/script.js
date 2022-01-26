@@ -14,6 +14,21 @@ var questions = [
     choices: ["quotes", "curly brackets", "parentheses", "square brackets"],
     answer: "parentheses",
   },
+  {
+    question: "Inside which HTML element do we put the JavaScript?",
+    choices: ["<scripting>", "<script>", "<js>", "<javascript>"],
+    answer: "<script>",
+  },
+  {
+    question: "Which of the following is an event listener in JavaScript?",
+    choices: ["onclick", "blur", "click", "Click()"],
+    answer: "click",
+  },
+  {
+    question: "Which function is used to parse a string to an int?",
+    choices: ["integer.parse", "int.parse", "parse.int", "none of the above"],
+    answer: "int.parse",
+  },
 ];
 
 
@@ -23,13 +38,18 @@ var questionResultItem = document.createElement("div");
 var timerItem = document.createElement("div");
 var highscoreList = document.createElement("ul");
 var body = document.body;
+var endquizEl = document.createElement("div")
+var hsButtonEl = document.createElement("button")
+var restartButtonEl = document.createElement("button")
+hsButtonEl.textContent = "View Highscore"
+restartButtonEl.textContent = "Restart Test"
 
 var questionIndex = 0;
 var correctCount = 0;
 
-var time = 20;
+var time = 30;
 var intervalId;
-var divIds = ['timer', 'question', 'option-list', 'question-result'];
+
 
 
 startButtonEl.onclick = function() {
@@ -47,19 +67,53 @@ highscoreBtnEl.onclick = function() {
 };
 
 function highscorePage() {
- var highscoreListItem = document.createElement("li")
-
- highscoreListItem.textcontent = "";
- highscoreList.appendChild(highscoreListItem);
- body.appendChild(highscoreList);
+  var highscoreListItem = document.createElement("li");
+  var savedScore = localStorage.getItem("score");
+  savedScore = JSON.parse(savedScore);
+  console.log(savedScore);
+  highscoreListItem.textContent = "Initials: " + savedScore.initials + "  Score: " + savedScore.score;
+  highscoreList.appendChild(highscoreListItem);
+  body.appendChild(highscoreList);
 
 }
 
 
+
 function endQuiz() {
   clearInterval(intervalId)
-  body.innerHTML = "Game over! Your score is: " + correctCount;
+  questionItem.remove();
+  optionList.remove();
+  questionResultItem.remove();
+  timerItem.remove();
+  renderResults();
+  document.querySelector("form").addEventListener("submit", storeData)
 };
+
+function storeData(event){
+  event.preventDefault();
+  var inputEl = document.querySelector("input");
+  var highscoreObj = {
+    initials: inputEl.value,
+    score: correctCount
+  }
+console.log(highscoreObj);
+  
+  localStorage.setItem("score", JSON.stringify(highscoreObj));
+}
+function renderResults() {
+  var resultHtml = `
+    <div>
+      <h3>Game over! Your score is: ${correctCount}</h3>
+      <form>
+        <label>Enter Initials</label>
+        <input type="text" />
+        <button id="submit-btn">Submit</button>
+      </form>
+    </div>
+  `
+  body.innerHTML = resultHtml;
+  
+}
 
 function updateTimer() {
   body.appendChild(timerItem);
