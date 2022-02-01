@@ -31,7 +31,8 @@ var questions = [
   },
 ];
 
-
+var containerEl = document.querySelector("#content-container");
+var questionContainerEl = document.createElement("div")
 var questionItem = document.createElement("div");
 var optionList = document.createElement("ul");
 var questionResultItem = document.createElement("div");
@@ -111,12 +112,12 @@ function renderResults() {
       </form>
     </div>
   `
-  body.innerHTML = resultHtml;
+  containerEl.innerHTML = resultHtml;
   
 }
 
 function updateTimer() {
-  body.appendChild(timerItem);
+  questionContainerEl.appendChild(timerItem); 
   time--;
   timerItem.textContent = time;
   if(time <= 0) {
@@ -148,9 +149,10 @@ function generateQuestion() {
     optionList.appendChild(questionListItem);
   }
 
-  body.appendChild(questionItem);
-  body.appendChild(optionList);
-  body.appendChild(questionResultItem);
+  questionContainerEl.appendChild(questionItem);
+  questionContainerEl.appendChild(optionList);
+  questionContainerEl.appendChild(questionResultItem);
+  containerEl.appendChild(questionContainerEl);
 
 };
 
