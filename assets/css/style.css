@@ -5,3 +5,13 @@
 .content-bg {
     background-color: #32021F;
 }
+
+ol {
+    list-style-position: inside;
+    list-style-type: upper-alpha;
+}
+
+.question-font {
+    font-weight: bold;
+}
+

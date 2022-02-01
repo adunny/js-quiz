@@ -34,7 +34,7 @@ var questions = [
 var containerEl = document.querySelector("#content-container");
 var questionContainerEl = document.createElement("div")
 var questionItem = document.createElement("div");
-var optionList = document.createElement("ul");
+var optionList = document.createElement("ol");
 var questionResultItem = document.createElement("div");
 var timerItem = document.createElement("div");
 var highscoreList = document.createElement("ul");
@@ -74,7 +74,9 @@ function highscorePage() {
   console.log(savedScore);
   highscoreListItem.textContent = "Initials: " + savedScore.initials + "  Score: " + savedScore.score;
   highscoreList.appendChild(highscoreListItem);
-  body.appendChild(highscoreList);
+  questionContainerEl.className = "row justify-content-center align-items-center border border-dark bg-light rounded text-center"
+  questionContainerEl.appendChild(highscoreList);
+  containerEl.appendChild(questionContainerEl);
 
 }
 
@@ -103,9 +105,9 @@ console.log(highscoreObj);
 }
 function renderResults() {
   var resultHtml = `
-    <div>
-      <h3>Game over! Your score is: ${correctCount}</h3>
-      <form>
+    <div class="row justify-content-center align-items-center border border-dark bg-light rounded">
+      <h3 class="py-3 text-center">Game over! Your score is: ${correctCount}</h3>
+      <form class="py-3 text-center">
         <label>Enter Initials</label>
         <input type="text" />
         <button id="submit-btn">Submit</button>
@@ -134,6 +136,7 @@ function generateQuestion() {
   intervalId = setInterval(updateTimer, 1000);
   
   questionItem.setAttribute("id", "question");
+  questionItem.className = "border-bottom border-dark question-font"
   questionItem.textContent = questions[questionIndex].question;
   optionList.setAttribute("id", "option-list");
   optionList.textContent = "";
@@ -148,7 +151,7 @@ function generateQuestion() {
     questionListItem.textContent = choices[i];
     optionList.appendChild(questionListItem);
   }
-
+  questionContainerEl.className = "row justify-content-center align-items-center border border-dark bg-light rounded text-center"
   questionContainerEl.appendChild(questionItem);
   questionContainerEl.appendChild(optionList);
   questionContainerEl.appendChild(questionResultItem);
